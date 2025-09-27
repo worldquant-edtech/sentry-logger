@@ -1,6 +1,6 @@
 {
   "name": "@wqlearning/sentry-logger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A TypeScript logger wrapper for Sentry with CommonJS and ESM support",
   "keywords": [
     "sentry",
