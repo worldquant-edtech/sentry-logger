@@ -14,6 +14,7 @@ export class SentryLogger {
       SentryInstance.init({
         dsn: options.dsn,
         environment: options.envName || 'development',
+        enableLogs: true,
       });
       this.isSentryInitialized = true;
     } catch (error) {
@@ -25,13 +26,7 @@ export class SentryLogger {
   log(message: string, data?: Record<string, unknown>): void {
     if (this.isSentryInitialized) {
       try {
-        SentryInstance.captureMessage(message, {
-          level: 'info',
-          extra: data,
-          tags: {
-            service: this.serviceName
-          }
-        });
+        SentryInstance.logger.info(message, data);
       } catch (error) {
         console.error('Failed to send log to Sentry:', error);
       }
@@ -55,13 +50,7 @@ export class SentryLogger {
         const extra = data ? { custom_message: message, ...data } : { custom_message: message };
         
         // Capture the exception with proper context
-        SentryInstance.captureException(error, {
-          level: 'error',
-          extra,
-          tags: {
-            service: this.serviceName
-          }
-        });
+        SentryInstance.logger.error(message, { ...extra, error });
       } catch (sentryError) {
         console.error('Failed to send error to Sentry:', sentryError);
       }

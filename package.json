@@ -1,7 +1,7 @@
 {
-  "name": "@your-org/sentry-logger",
+  "name": "@wqlearning/sentry-logger",
   "version": "1.0.0",
-  "description": "A TypeScript logger that integrates with Sentry for error tracking and logging",
+  "description": "A TypeScript logger wrapper for Sentry with CommonJS and ESM support",
   "keywords": [
     "sentry",
     "logger",
@@ -10,27 +10,28 @@
     "monitoring"
   ],
   "license": "ISC",
-  "author": "Your Name <your.email@example.com>",
+  "author": "WorldQuant Learning",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/sentry-logger.git"
+    "url": "https://github.com/wqlearning/sentry-logger.git"
   },
-  "homepage": "https://github.com/your-org/sentry-logger#readme",
+  "homepage": "https://github.com/wqlearning/sentry-logger#readme",
   "bugs": {
-    "url": "https://github.com/your-org/sentry-logger/issues"
+    "url": "https://github.com/wqlearning/sentry-logger/issues"
   },
   "type": "module",
-  "main": "./dist/cjs/index.js",
+  "main": "./dist/cjs/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "import": "./dist/index.js",
-    "require": "./dist/cjs/index.js"
+    "require": "./dist/cjs/index.cjs"
   },
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p tsconfig.json",
-    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json && npm run rename:cjs",
+    "rename:cjs": "./scripts/rename-cjs.sh",
     "build:watch": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
