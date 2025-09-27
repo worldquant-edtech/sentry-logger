@@ -7,8 +7,12 @@ vi.mock('@sentry/node');
 
 const mockInit = vi.fn();
 const mockLogger = {
+  trace: vi.fn(),
+  debug: vi.fn(),
   info: vi.fn(),
-  error: vi.fn()
+  warn: vi.fn(),
+  error: vi.fn(),
+  fatal: vi.fn()
 };
 const mockFlush = vi.fn().mockResolvedValue(true);
 const mockClose = vi.fn().mockResolvedValue(true);
@@ -41,8 +45,26 @@ describe('SentryLogger', () => {
     });
   });
 
-  it('should log messages', () => {
-    const message = 'Test message';
+  it('should log trace messages', () => {
+    const message = 'Trace message';
+    const data = { key: 'value' };
+    
+    logger.trace(message, data);
+    
+    expect(mockLogger.trace).toHaveBeenCalledWith(message, data);
+  });
+
+  it('should log debug messages', () => {
+    const message = 'Debug message';
+    const data = { key: 'value' };
+    
+    logger.debug(message, data);
+    
+    expect(mockLogger.debug).toHaveBeenCalledWith(message, data);
+  });
+
+  it('should log info messages', () => {
+    const message = 'Info message';
     const data = { key: 'value' };
     
     logger.log(message, data);
@@ -50,16 +72,36 @@ describe('SentryLogger', () => {
     expect(mockLogger.info).toHaveBeenCalledWith(message, data);
   });
 
-  it('should log errors', () => {
-    const message = 'Error message';
-    const error = new Error('Test error');
+  it('should log warning messages', () => {
+    const message = 'Warning message';
     const data = { key: 'value' };
     
-    logger.error(message, error, data);
+    logger.warn(message, data);
+    
+    expect(mockLogger.warn).toHaveBeenCalledWith(message, data);
+  });
+
+  it('should log error messages', () => {
+    const message = 'Error message';
+    const data = { key: 'value', error: new Error('Test error') };
+    
+    logger.error(message, data);
     
     expect(mockLogger.error).toHaveBeenCalledWith(message, {
-      error,
-      ...{ custom_message: message, ...data }
+      custom_message: message,
+      ...data
+    });
+  });
+
+  it('should log fatal messages', () => {
+    const message = 'Fatal message';
+    const data = { key: 'value', error: new Error('Fatal error') };
+    
+    logger.fatal(message, data);
+    
+    expect(mockLogger.fatal).toHaveBeenCalledWith(message, {
+      custom_message: message,
+      ...data
     });
   });
 
