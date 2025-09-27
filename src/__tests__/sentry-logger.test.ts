@@ -6,15 +6,17 @@ import * as Sentry from '@sentry/node';
 vi.mock('@sentry/node');
 
 const mockInit = vi.fn();
-const mockCaptureMessage = vi.fn();
-const mockCaptureException = vi.fn();
+const mockLogger = {
+  info: vi.fn(),
+  error: vi.fn()
+};
 const mockFlush = vi.fn().mockResolvedValue(true);
 const mockClose = vi.fn().mockResolvedValue(true);
 
 // Setup mock implementations
 vi.mocked(Sentry.init).mockImplementation(mockInit);
-vi.mocked(Sentry.captureMessage).mockImplementation(mockCaptureMessage);
-vi.mocked(Sentry.captureException).mockImplementation(mockCaptureException);
+// @ts-expect-error - Mock the Sentry logger
+vi.mocked(Sentry).logger = mockLogger;
 vi.mocked(Sentry.flush).mockImplementation(mockFlush);
 vi.mocked(Sentry.close).mockImplementation(mockClose);
 
@@ -34,7 +36,8 @@ describe('SentryLogger', () => {
   it('should initialize Sentry with the provided options', () => {
     expect(mockInit).toHaveBeenCalledWith({
       dsn: mockOptions.dsn,
-      environment: mockOptions.env
+      environment: mockOptions.env,
+      enableLogs: true
     });
   });
 
@@ -44,13 +47,7 @@ describe('SentryLogger', () => {
     
     logger.log(message, data);
     
-    expect(mockCaptureMessage).toHaveBeenCalledWith(message, {
-      level: 'info',
-      extra: data,
-      tags: {
-        service: mockOptions.serviceName
-      }
-    });
+    expect(mockLogger.info).toHaveBeenCalledWith(message, data);
   });
 
   it('should log errors', () => {
@@ -60,15 +57,9 @@ describe('SentryLogger', () => {
     
     logger.error(message, error, data);
     
-    expect(mockCaptureException).toHaveBeenCalledWith(error, {
-      level: 'error',
-      extra: {
-        custom_message: message,
-        ...data
-      },
-      tags: {
-        service: mockOptions.serviceName
-      }
+    expect(mockLogger.error).toHaveBeenCalledWith(message, {
+      error,
+      ...{ custom_message: message, ...data }
     });
   });
 
