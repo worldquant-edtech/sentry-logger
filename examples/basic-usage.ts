@@ -17,12 +17,17 @@ try {
   console.log(result);
 } catch (error) {
   if (error instanceof Error) {
-    logger.error('Failed to parse JSON', error, { 
+    logger.error('Failed to parse JSON', {
+      error: error,
       context: 'example',
-      timestamp: new Date().toISOString() 
+      timestamp: new Date().toISOString()
     });
   } else {
-    logger.error('An unknown error occurred', new Error(String(error)));
+    logger.error('An unknown error occurred', {
+      error: error,
+      context: 'example',
+      timestamp: new Date().toISOString()
+    });
   }
 }
 
