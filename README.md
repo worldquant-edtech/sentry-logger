@@ -45,6 +45,21 @@ try {
 await logger.close();
 ```
 
+### CommonJS Usage
+
+```js
+
+const { SentryLogger } = require('./../sentry-logger/dist/cjs/index.cjs')
+
+const logger = new SentryLogger({
+    dsn: 'your@sentry-dsn/project',
+    envName: 'development',
+    serviceName: 'test-service'
+})
+
+logger.log('test', { message: 'test' })
+```
+
 ### API
 
 #### `new SentryLogger(options: { serviceName: string; dsn: string; env: string })`

@@ -1,5 +1,6 @@
 // Import Sentry
 import * as Sentry from '@sentry/node';
+import { error } from 'console';
 
 // Create a type-safe reference to the Sentry instance
 const SentryInstance = Sentry;
@@ -23,6 +24,30 @@ export class SentryLogger {
     }
   }
 
+  trace(message: string, data?: Record<string, unknown>): void {
+    if (this.isSentryInitialized) {
+      try {
+        SentryInstance.logger.trace(message, data);
+      } catch (error) {
+        console.error('Failed to send trace to Sentry:', error);
+      }
+    } else {
+      console.log(message, data);
+    }
+  }
+
+  debug(message: string, data?: Record<string, unknown>): void {
+    if (this.isSentryInitialized) {
+      try {
+        SentryInstance.logger.debug(message, data);
+      } catch (error) {
+        console.error('Failed to send debug to Sentry:', error);
+      }
+    } else {
+      console.log(message, data);
+    }
+  }
+
   log(message: string, data?: Record<string, unknown>): void {
     if (this.isSentryInitialized) {
       try {
@@ -30,46 +55,47 @@ export class SentryLogger {
       } catch (error) {
         console.error('Failed to send log to Sentry:', error);
       }
+    } else {
+      console.log(message, data);
     }
-    
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      service: this.serviceName,
-      level: 'info',
-      message,
-      ...(data && { data })
-    };
-    
-    console.log(JSON.stringify(logEntry));
   }
 
-  error(message: string, error: Error, data?: Record<string, unknown>): void {
+  warn(message: string, data?: Record<string, unknown>): void {
     if (this.isSentryInitialized) {
       try {
-        // Set context for the error
+        SentryInstance.logger.warn(message, data);
+      } catch (error) {
+        console.error('Failed to send warning to Sentry:', error);
+      }
+    } else {
+      console.warn(message, data);
+    }
+  }
+
+  error(message: string, data?: Record<string, unknown>): void {
+    if (this.isSentryInitialized) {
+      try {
         const extra = data ? { custom_message: message, ...data } : { custom_message: message };
-        
-        // Capture the exception with proper context
-        SentryInstance.logger.error(message, { ...extra, error });
+        SentryInstance.logger.error(message, extra);
       } catch (sentryError) {
         console.error('Failed to send error to Sentry:', sentryError);
       }
+    } else {
+      console.error(message, data);
     }
+  }
 
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      service: this.serviceName,
-      level: 'error',
-      message,
-      error: {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      },
-      ...(data && { data })
-    };
-    
-    console.error(JSON.stringify(logEntry));
+  fatal(message: string, data?: Record<string, unknown>): void {
+    if (this.isSentryInitialized) {
+      try {
+        const extra = data ? { custom_message: message, ...data } : { custom_message: message };
+        SentryInstance.logger.fatal(message, extra);
+      } catch (sentryError) {
+        console.error('Failed to send fatal error to Sentry:', sentryError);
+      }
+    } else {
+      console.error(message, data);
+    }
   }
 
   /**
