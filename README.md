@@ -1,12 +1,12 @@
 # Sentry Logger
 
-A TypeScript logger that integrates with Sentry for error tracking and logging.
+A TypeScript wrapper for Sentry logging with CommonJS and ESM support.
 
 ## Features
 
-- Simple and consistent logging interface
-- Error tracking with Sentry integration
+- Simple and consistent Sentry logging interface
 - Support for both ESM and CommonJS modules
+- Support for all Sentry log levels (trace, debug, info, warning, error, fatal)
 
 ## Installation
 
@@ -116,3 +116,11 @@ npm test
 ## License
 
 ISC
+
+## Notes
+
+This library was primarily created for internal use to provide a consistent logging interface for Sentry logging, especially for CommonJS modules.
+
+Sentry is a registered trademark of Functional Software, Inc.
+
+Current library is not related to Sentry service or Functional Software, Inc in any way.
