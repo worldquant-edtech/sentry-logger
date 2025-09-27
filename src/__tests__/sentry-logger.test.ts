@@ -23,7 +23,7 @@ describe('SentryLogger', () => {
   const mockOptions = {
     serviceName: 'test-service',
     dsn: 'test-dsn',
-    envName: 'test'
+    env: 'test'
   };
 
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('SentryLogger', () => {
   it('should initialize Sentry with the provided options', () => {
     expect(mockInit).toHaveBeenCalledWith({
       dsn: mockOptions.dsn,
-      environment: mockOptions.envName
+      environment: mockOptions.env
     });
   });
 

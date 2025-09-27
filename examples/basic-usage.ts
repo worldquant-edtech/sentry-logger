@@ -4,7 +4,7 @@ import { SentryLogger } from '../src/sentry-logger';
 const logger = new SentryLogger({
   serviceName: 'example-service',
   dsn: process.env.SENTRY_DSN || 'your-sentry-dsn-here',
-  envName: process.env.NODE_ENV || 'development'
+  env: process.env.NODE_ENV || 'development'
 });
 
 // Log some messages

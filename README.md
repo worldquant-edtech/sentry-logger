@@ -7,15 +7,13 @@ A TypeScript logger that integrates with Sentry for error tracking and logging.
 - Simple and consistent logging interface
 - Error tracking with Sentry integration
 - Support for both ESM and CommonJS modules
-- Structured JSON logging
-- Graceful error handling and fallbacks
 
 ## Installation
 
 ```bash
-npm install @your-org/sentry-logger
+npm install @wqlearning/sentry-logger
 # or
-yarn add @your-org/sentry-logger
+yarn add @wqlearning/sentry-logger
 ```
 
 ## Usage
@@ -23,13 +21,13 @@ yarn add @your-org/sentry-logger
 ### Basic Usage
 
 ```typescript
-import { SentryLogger } from '@your-org/sentry-logger';
+import { SentryLogger } from '@wqlearning/sentry-logger';
 
 // Initialize the logger
 const logger = new SentryLogger({
   serviceName: 'my-service',
   dsn: 'your-sentry-dsn',
-  envName: 'production'
+  env: 'development'
 });
 
 // Log messages
@@ -49,13 +47,13 @@ await logger.close();
 
 ### API
 
-#### `new SentryLogger(options: { serviceName: string; dsn: string; envName: string })`
+#### `new SentryLogger(options: { serviceName: string; dsn: string; env: string })`
 
 Creates a new logger instance.
 
 - `serviceName`: The name of your service (used in logs)
 - `dsn`: Your Sentry DSN (Data Source Name)
-- `envName`: Environment name (e.g., 'development', 'production')
+- `env`: Environment name (e.g., 'development', 'production')
 
 #### `log(message: string, data?: Record<string, unknown>): void`
 

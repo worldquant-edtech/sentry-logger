@@ -8,12 +8,12 @@ export class SentryLogger {
   private serviceName: string;
   private isSentryInitialized: boolean = false;
 
-  constructor(options: { serviceName: string; dsn: string; envName: string }) {
+  constructor(options: { serviceName: string; dsn: string; env: string }) {
     this.serviceName = options.serviceName;
     try {
       SentryInstance.init({
         dsn: options.dsn,
-        environment: options.envName || 'development',
+        environment: options.env || 'development',
         enableLogs: true,
       });
       this.isSentryInitialized = true;
