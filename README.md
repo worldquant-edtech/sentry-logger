@@ -49,7 +49,7 @@ await logger.close();
 
 ```js
 
-const { SentryLogger } = require('./../sentry-logger/dist/cjs/index.cjs')
+const { SentryLogger } = require('@wqlearning/sentry-logger')
 
 const logger = new SentryLogger({
     dsn: 'your@sentry-dsn/project',
