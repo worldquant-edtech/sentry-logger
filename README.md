@@ -62,13 +62,17 @@ logger.log('test', { message: 'test' })
 
 ### API
 
-#### `new SentryLogger(options: { serviceName: string; dsn: string; env: string })`
+#### `new SentryLogger({ serviceName: string; dsn: string; env: string })`
 
 Creates a new logger instance.
 
 - `serviceName`: The name of your service (used in logs)
-- `dsn`: Your Sentry DSN (Data Source Name)
-- `env`: Environment name (e.g., 'development', 'production')
+  - `dsn`: Your Sentry DSN (Data Source Name)
+  - `env`: Environment name (e.g., 'development', 'production')
+
+#### `info(message: string, data?: Record<string, unknown>): void`
+
+or
 
 #### `log(message: string, data?: Record<string, unknown>): void`
 
@@ -77,13 +81,19 @@ Logs an informational message.
 - `message`: The message to log
 - `data`: Optional additional data to include in the log entry
 
-#### `error(message: string, error: Error, data?: Record<string, unknown>): void`
+#### `error(message: string, data?: Record<string, unknown>): void`
 
 Logs an error.
 
 - `message`: The error message
-- `error`: The Error object
 - `data`: Optional additional data to include with the error
+
+#### `warn(message: string, data?: Record<string, unknown>): void`
+
+Logs a warning.
+
+- `message`: The warning message
+- `data`: Optional additional data to include with the warning
 
 #### `close(timeout = 2000): Promise<boolean>`
 
