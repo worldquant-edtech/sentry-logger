@@ -1,0 +1,105 @@
+# Sentry Logger
+
+A TypeScript logger that integrates with Sentry for error tracking and logging.
+
+## Features
+
+- Simple and consistent logging interface
+- Error tracking with Sentry integration
+- Support for both ESM and CommonJS modules
+- Structured JSON logging
+- Graceful error handling and fallbacks
+
+## Installation
+
+```bash
+npm install @your-org/sentry-logger
+# or
+yarn add @your-org/sentry-logger
+```
+
+## Usage
+
+### Basic Usage
+
+```typescript
+import { SentryLogger } from '@your-org/sentry-logger';
+
+// Initialize the logger
+const logger = new SentryLogger({
+  serviceName: 'my-service',
+  dsn: 'your-sentry-dsn',
+  envName: 'production'
+});
+
+// Log messages
+logger.log('Application started');
+
+try {
+  // Your application code
+  throw new Error('Something went wrong');
+} catch (error) {
+  // Log errors
+  logger.error('An error occurred', error, { additional: 'data' });
+}
+
+// Before shutting down your application
+await logger.close();
+```
+
+### API
+
+#### `new SentryLogger(options: { serviceName: string; dsn: string; envName: string })`
+
+Creates a new logger instance.
+
+- `serviceName`: The name of your service (used in logs)
+- `dsn`: Your Sentry DSN (Data Source Name)
+- `envName`: Environment name (e.g., 'development', 'production')
+
+#### `log(message: string, data?: Record<string, unknown>): void`
+
+Logs an informational message.
+
+- `message`: The message to log
+- `data`: Optional additional data to include in the log entry
+
+#### `error(message: string, error: Error, data?: Record<string, unknown>): void`
+
+Logs an error.
+
+- `message`: The error message
+- `error`: The Error object
+- `data`: Optional additional data to include with the error
+
+#### `close(timeout = 2000): Promise<boolean>`
+
+Closes the Sentry client and flushes any pending events.
+
+- `timeout`: Maximum time to wait for events to be sent (in milliseconds)
+- Returns: `true` if closed successfully, `false` otherwise
+
+## Development
+
+### Building
+
+```bash
+npm run build
+```
+
+### Testing
+
+```bash
+npm test
+```
+
+### Publishing
+
+1. Update the version in `package.json`
+2. Commit and push changes
+3. Create a new release tag
+4. Run `npm publish`
+
+## License
+
+ISC

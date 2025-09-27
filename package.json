@@ -1,0 +1,54 @@
+{
+  "name": "@your-org/sentry-logger",
+  "version": "1.0.0",
+  "description": "A TypeScript logger that integrates with Sentry for error tracking and logging",
+  "keywords": [
+    "sentry",
+    "logger",
+    "typescript",
+    "error-tracking",
+    "monitoring"
+  ],
+  "license": "ISC",
+  "author": "Your Name <your.email@example.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/sentry-logger.git"
+  },
+  "homepage": "https://github.com/your-org/sentry-logger#readme",
+  "bugs": {
+    "url": "https://github.com/your-org/sentry-logger/issues"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p tsconfig.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:watch": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "dist/cjs",
+    "dist/index.d.ts"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2",
+    "vitest": "^1.0.0",
+    "@vitest/coverage-v8": "^1.0.0"
+  },
+  "dependencies": {
+    "@sentry/node": "^10.15.0"
+  }
+}
