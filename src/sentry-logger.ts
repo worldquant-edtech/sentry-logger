@@ -1,13 +1,10 @@
 // Import Sentry
 import * as Sentry from '@sentry/node';
-import { error } from 'console';
 
 // Create a type-safe reference to the Sentry instance
 const SentryInstance = Sentry;
 
 export class SentryLogger {
-  private isSentryInitialized: boolean = false;
-
   constructor(options: { dsn: string; env: string }) {
     try {
       SentryInstance.init({
@@ -15,15 +12,13 @@ export class SentryLogger {
         environment: options.env || 'development',
         enableLogs: true,
       });
-      this.isSentryInitialized = true;
     } catch (error) {
       console.error('Failed to initialize Sentry:', error);
-      this.isSentryInitialized = false;
     }
   }
 
   trace(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         SentryInstance.logger.trace(message, data);
       } catch (error) {
@@ -35,7 +30,7 @@ export class SentryLogger {
   }
 
   debug(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         SentryInstance.logger.debug(message, data);
       } catch (error) {
@@ -47,7 +42,7 @@ export class SentryLogger {
   }
 
   log(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         SentryInstance.logger.info(message, data);
       } catch (error) {
@@ -59,7 +54,7 @@ export class SentryLogger {
   }
 
   warn(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         SentryInstance.logger.warn(message, data);
       } catch (error) {
@@ -71,7 +66,7 @@ export class SentryLogger {
   }
 
   info(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         SentryInstance.logger.info(message, data);
       } catch (error) {
@@ -83,7 +78,7 @@ export class SentryLogger {
   }
 
   error(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         const extra = data ? { custom_message: message, ...data } : { custom_message: message };
         SentryInstance.logger.error(message, extra);
@@ -96,7 +91,7 @@ export class SentryLogger {
   }
 
   fatal(message: string, data?: Record<string, unknown>): void {
-    if (this.isSentryInitialized) {
+    if (SentryInstance.isInitialized()) {
       try {
         const extra = data ? { custom_message: message, ...data } : { custom_message: message };
         SentryInstance.logger.fatal(message, extra);
@@ -113,7 +108,7 @@ export class SentryLogger {
    * and the Sentry client is properly closed.
    */
   async close(timeout = 2000): Promise<boolean> {
-    if (!this.isSentryInitialized) {
+    if (!SentryInstance.isInitialized()) {
       return true;
     }
 
@@ -124,7 +119,6 @@ export class SentryLogger {
       if (typeof SentryInstance.close === 'function') {
         await SentryInstance.close(timeout);
       }
-      this.isSentryInitialized = false;
       return true;
     } catch (error) {
       console.error('Error while closing Sentry client:', error);
