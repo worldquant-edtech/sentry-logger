@@ -70,6 +70,18 @@ export class SentryLogger {
     }
   }
 
+  info(message: string, data?: Record<string, unknown>): void {
+    if (this.isSentryInitialized) {
+      try {
+        SentryInstance.logger.info(message, data);
+      } catch (error) {
+        console.error('Failed to send info to Sentry:', error);
+      }
+    } else {
+      console.info(message, data);
+    }
+  }
+
   error(message: string, data?: Record<string, unknown>): void {
     if (this.isSentryInitialized) {
       try {
