@@ -25,7 +25,6 @@ import { SentryLogger } from '@wqlearning/sentry-logger';
 
 // Initialize the logger
 const logger = new SentryLogger({
-  serviceName: 'my-service',
   dsn: 'your-sentry-dsn',
   env: 'development'
 });
@@ -53,8 +52,7 @@ const { SentryLogger } = require('@wqlearning/sentry-logger')
 
 const logger = new SentryLogger({
     dsn: 'your@sentry-dsn/project',
-    envName: 'development',
-    serviceName: 'test-service'
+    env: 'development'
 })
 
 logger.log('test', { message: 'test' })
@@ -62,13 +60,12 @@ logger.log('test', { message: 'test' })
 
 ### API
 
-#### `new SentryLogger({ serviceName: string; dsn: string; env: string })`
+#### `new SentryLogger({ dsn: string; env: string })`
 
 Creates a new logger instance.
 
-- `serviceName`: The name of your service (used in logs)
-  - `dsn`: Your Sentry DSN (Data Source Name)
-  - `env`: Environment name (e.g., 'development', 'production')
+- `dsn`: Your Sentry DSN (Data Source Name)
+- `env`: Environment name (e.g., 'development', 'production')
 
 #### `info(message: string, data?: Record<string, unknown>): void`
 

@@ -6,11 +6,9 @@ import { error } from 'console';
 const SentryInstance = Sentry;
 
 export class SentryLogger {
-  private serviceName: string;
   private isSentryInitialized: boolean = false;
 
-  constructor(options: { serviceName: string; dsn: string; env: string }) {
-    this.serviceName = options.serviceName;
+  constructor(options: { dsn: string; env: string }) {
     try {
       SentryInstance.init({
         dsn: options.dsn,

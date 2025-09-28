@@ -2,7 +2,6 @@ import { SentryLogger } from '../src/sentry-logger';
 
 // Initialize the logger
 const logger = new SentryLogger({
-  serviceName: 'example-service',
   dsn: process.env.SENTRY_DSN || 'your-sentry-dsn-here',
   env: process.env.NODE_ENV || 'development'
 });

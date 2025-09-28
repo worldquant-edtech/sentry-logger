@@ -27,7 +27,6 @@ vi.mocked(Sentry.close).mockImplementation(mockClose);
 describe('SentryLogger', () => {
   let logger: SentryLogger;
   const mockOptions = {
-    serviceName: 'test-service',
     dsn: 'test-dsn',
     env: 'test'
   };
