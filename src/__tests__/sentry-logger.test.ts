@@ -19,6 +19,7 @@ const mockClose = vi.fn().mockResolvedValue(true);
 
 // Setup mock implementations
 vi.mocked(Sentry.init).mockImplementation(mockInit);
+vi.mocked(Sentry.isInitialized).mockReturnValue(true);
 // @ts-expect-error - Mock the Sentry logger
 vi.mocked(Sentry).logger = mockLogger;
 vi.mocked(Sentry.flush).mockImplementation(mockFlush);
